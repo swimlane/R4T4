@@ -1,0 +1,23 @@
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# Build results
+target/
+[Dd]eploy/
+[Dd]ebug/
+[Dd]ebugPublic/
+x64/
+bld/
+build/
+[Bb]in/
+[Oo]bj/
+!web/build
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+_Resharper.Caches/*
+packages/*
