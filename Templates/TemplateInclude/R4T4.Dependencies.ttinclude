@@ -1,0 +1,58 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>$(ProjectDir)bin\\Debug\\net461\\win7-x64\\
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\R4T4.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\Microsoft.CodeAnalysis.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\Microsoft.CodeAnalysis.CSharp.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\Microsoft.CodeAnalysis.Workspaces.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Composition.AttributedModel.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Composition.Convention.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Composition.Hosting.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Composition.Runtime.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Composition.TypedParts.dll" #>
+<#@ assembly name="$(SolutionDir)R4T4\\bin\\Debug\\System.Collections.Immutable.dll" #>
+<#@ assembly name="EnvDTE" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.IO" #>
+<#@ assembly name="System.Runtime" #>
+<#@ assembly name="System.Text.Encoding" #>
+<#@ assembly name="System.Threading.Tasks" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="Microsoft.CodeAnalysis" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp.Syntax" #>
+<#@ import namespace="Microsoft.CodeAnalysis.Workspaces" #>
+<#@ import namespace="Microsoft.CodeAnalysis.MSBuild" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Threading.Tasks" #>
+<#@ import namespace="R4T4" #>
+<#@ import namespace="R4T4.Extensions" #>
+<#@ import namespace="R4T4.Models" #>
+<#@ import namespace="EnvDTE" #>
+<#@ import namespace="System.IO" #>
+<#+
+        public string GetSolutionDirectory()
+        {
+			return Path.GetDirectoryName(GetSolutionFile());
+        }
+
+        public  string GetSolutionFile()
+        {
+            return GetDteSolution().FullName;
+        }
+
+		public EnvDTE.Solution GetDteSolution()
+		{
+			var serviceProvider = (IServiceProvider) Host;
+			var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
+			var dteSolution = dte.Solution;
+			return dteSolution;
+		}
+#>

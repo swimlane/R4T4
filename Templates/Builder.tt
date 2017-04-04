@@ -1,0 +1,197 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".txt" #>
+<#@ include file="Templates\Roslyn4T4.Dependencies.ttinclude" #>
+<#@ include file="Templates\TemplateFilemanager.CS.ttinclude" #>
+
+<#
+    var types = new List<string>()
+    {
+        "Core.Models.Search.Report",
+        "Core.Models.Record.Record",
+        "Core.Models.Workspaces.Dashboard",
+        "Core.Models.Jobs.BackgroundJob",
+        "Core.Models.Application.Application",
+        "Core.Models.Integrations.Assets.Asset",
+        "Core.Models.Roles.Role",
+        "Core.Models.Groups.Group",
+        "Core.Models.Application.ExportTransformation",
+        "Core.Models.ScriptLibrary.Script",
+        "Core.Models.Settings.GlobalSettings",
+        "Core.Models.Workflow.Workflow",
+        "Core.Models.Workspaces.Workspace",
+        "Core.Models.Identity.ApplicationUser"
+    };
+ #>
+
+<#
+    var solutionFile = GetSolutionFile();
+    var solution = new SolutionService(solutionFile);
+    var project = solution.GetProject("Core");
+	var typeService = new TypeService(project);
+
+var fileManager = TemplateFileManager.Create(this);
+fileManager.IsAutoIndentEnabled = true;
+fileManager.CanOverwriteExistingFile = true;
+
+
+foreach(var type in types)
+{
+    var classModel = typeService.GetByType(type);
+    var entityName = classModel.Name;   
+    var props= classModel.Properties;
+    var interfaceName= $"I{entityName}Builder";
+    var repositoryInterfaceName = $"I{entityName}Repository";
+ //One offs
+if(entityName=="StatsReport")
+        {repositoryInterfaceName="IReportRepository";}
+if(entityName=="Asset")
+        {repositoryInterfaceName="IAssetLibraryRepository";}    
+if(entityName=="Import")
+        {repositoryInterfaceName="IDataImportRepository";}       
+if(entityName=="Script")
+        {repositoryInterfaceName="IScriptLibraryRepository";}   
+ if(entityName=="GlobalSettings")
+        {repositoryInterfaceName="ISettingsRepository";}          
+
+    fileManager.StartNewFile(entityName+"Builder.cs");
+#>
+using System;
+using <#= classModel.Type.Namespace #>;
+using Core.Db;
+using Core.Repositories;
+using MongoDB.Driver;
+using System.Collections.Generic;
+using Core.Models.Fields;
+using Core.Models.Layouts;
+using Core.Models.Security;
+using MongoDB.Bson;
+using Core.Models.Base;
+using Core.Models.Jobs;
+using Core.Models.Utilities;
+
+namespace Tests.Builders
+{
+    public partial interface <#=interfaceName#>
+    {
+        <#=entityName #> Finish();
+        <#=entityName #> Current{get;}
+<#    foreach(var prop in props){ #>
+        <#=interfaceName#> <#=prop.Name #>(<#= prop.Type.FullType #> <#=prop.Name.ToLower() #>);
+<#    }#>
+
+<# var collections = new HashSet<string>(){"List","IList","HashSet"};
+foreach(var prop in props.Where(p=>p.Type.IsGenerics))
+    {
+        var iTypes = prop.Type.InnerTypes;
+        if (prop.Type.Name == "Dictionary")
+        {
+#>        <#=interfaceName #> Add<#=Singular(prop.Name) #>(<#= iTypes[0].FullType #> key, <#= iTypes[1].FullType #> value);
+<# } 
+			else if (collections.Contains(prop.Type.Name))
+        {
+            #> <#=interfaceName #> Add<#=Singular(prop.Name) #>(<#= prop.Type.InnerTypes[0].FullType #> value);
+        <#}
+    }#>
+
+<#        if(props.Any(prop=>prop.Name=="PermissionMatrix")){ #>
+           <#=interfaceName#> AddPermission(Authorization value);
+<#        } #>
+    }
+
+    public abstract partial class <#=entityName #>BuilderBase : <#=interfaceName#>
+    {
+        protected <#=entityName #>BuilderBase()
+        {
+            _entity = new <#=entityName #>();
+        }
+
+        // ReSharper disable once InconsistentNaming
+        protected <#=entityName #> _entity;
+        public <#=entityName #> Current{get{return _entity;}}
+        public abstract <#=entityName #> Finish();
+
+<#    foreach(var prop in props){ #>
+        public <#=interfaceName#> <#=prop.Name #>(<#= prop.Type.FullType #> <#=prop.Name.ToLower() #>)
+        {
+            _entity.<#=prop.Name#> = <#=prop.Name.ToLower() #>;
+            return this;
+        }
+<#    }#>
+
+<#
+foreach(var prop in props.Where(p=>p.Type.IsGenerics))
+    {
+        var iTypes = prop.Type.InnerTypes;
+        if (prop.Type.Name == "Dictionary")
+        {
+#>      public <#=interfaceName#> Add<#=Singular(prop.Name)#>(<#= iTypes[0].FullType #> key, <#=iTypes[1].FullType #> value)
+{
+        _entity.<#=prop.Name#>.Add(key,value);
+        return this;
+}
+<# } 
+			else if (collections.Contains(prop.Type.Name))
+        {
+#>        public <#=interfaceName#> Add<#=Singular(prop.Name)#>(<#= iTypes[0].FullType #>  value)
+{
+        _entity.<#=prop.Name#>.Add(value);
+        return this;
+}
+        <#}
+    }#>
+
+<#        if(props.Any(prop=>prop.Type.Name=="PermissionMatrix")){ #>
+           public <#=interfaceName#> AddPermission(Authorization value)
+                {
+                        _entity.Permissions.Add(value.Id, value);
+                        return this;
+                }
+<#        } #>
+
+    }
+
+    public class <#=entityName #>BuilderMongo : <#=entityName #>BuilderBase
+    {
+        private readonly MongoDatabase _database;
+
+        public <#=entityName #>BuilderMongo(MongoDatabase database)
+        {
+            _database = database;
+        }
+
+		public override <#=entityName #> Finish()
+		{
+            var name = new CollectionNameProvider().CollectionName<<#=entityName #>>();
+            var collection = _database.GetCollection<<#=entityName #>>(name);
+            collection.Save(_entity);
+            return _entity;
+		}
+    }
+
+    public class <#=entityName#>Builder : <#=entityName#>BuilderBase
+    {
+        private readonly <#= repositoryInterfaceName #> _repository;
+
+        public <#=entityName#>Builder(<#= repositoryInterfaceName #> repository)
+        {
+            _repository = repository;
+        }
+        public override <#=entityName#> Finish()
+        {
+            _repository.Insert(_entity);
+            return _entity;
+        }
+    }
+}
+<#} fileManager.Process(); #>
+<#+
+private string Singular(string value)
+{
+    return value.EndsWith("s") ? value.Remove(value.Length-1,1) : value;
+}
+ #>
