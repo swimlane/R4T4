@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Swimlane.Roslyn4T4</id>
-    <version>1.0.0-beta4</version>
+    <version>1.0.0</version>
     <title>Roslyn4T4</title>
     <authors>Dmitriy Krasnikov</authors>
     <owners>Swimlane</owners>

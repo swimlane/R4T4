@@ -5,18 +5,37 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslyn4T4.Models
 {
+    /// <summary>
+    /// Model for classes and interfaces
+    /// </summary>
     public class ClassModel : BaseModel<INamedTypeSymbol>
     {
         private List<MethodModel> _methods;
         private HashSet<string> _publicMembers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClassModel"/> class.
+        /// </summary>
+        /// <param name="symbol">The symbol.</param>
         public ClassModel(INamedTypeSymbol symbol) : base(symbol)
         {
         }
 
+        /// <summary>
+        /// Gets the public member names.
+        /// </summary>
+        /// <value>
+        /// The public member namess.
+        /// </value>
         public HashSet<string> PublicMembers => _publicMembers
                                                 ?? (_publicMembers = new HashSet<string>(Symbol.MemberNames));
 
+        /// <summary>
+        /// Gets the public class methods.
+        /// </summary>
+        /// <value>
+        /// The methods.
+        /// </value>
         public List<MethodModel> Methods
         {
             get
@@ -30,6 +49,12 @@ namespace Roslyn4T4.Models
             }
         }
 
+        /// <summary>
+        /// Gets the public class properties.
+        /// </summary>
+        /// <value>
+        /// The properties.
+        /// </value>
         public List<PropertyModel> Properties
         {
             get
@@ -45,7 +70,13 @@ namespace Roslyn4T4.Models
 
         #region Overrides of BaseModel<INamedTypeSymbol>
 
-        public override ISymbol ModelType => Symbol;
+        /// <summary>
+        /// Gets the symbol of the model type.
+        /// </summary>
+        /// <value>
+        /// The ISymbol
+        /// </value>
+        protected override ISymbol ModelType => Symbol;
 
         #endregion
     }

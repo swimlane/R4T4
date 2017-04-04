@@ -8,12 +8,19 @@ using Roslyn4T4.Models;
 
 namespace Roslyn4T4
 {
-    public class TypeService
+    /// <summary>
+    /// Class and Interface provider
+    /// </summary>
+    public class ClassService
     {
         private readonly Dictionary<string, INamedTypeSymbol> _classes = new Dictionary<string, INamedTypeSymbol>();
         private readonly Dictionary<string, List<INamedTypeSymbol>> _bases = new Dictionary<string, List<INamedTypeSymbol>>();
 
-        public TypeService(CompiledProject project)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClassService"/> class.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        public ClassService(CompiledProject project)
         {
             var classes = project.Compilation.SyntaxTrees
                 .Select(s => project.Compilation.GetSemanticModel(s))
@@ -36,10 +43,20 @@ namespace Roslyn4T4
             }
         }
 
+        /// <summary>
+        /// Gets the class by it's base type.
+        /// </summary>
+        /// <param name="fqBaseName">Fully qualified name of the base type.</param>
+        /// <returns></returns>
         public IEnumerable<ClassModel> GetByBaseType(string fqBaseName)
         {
             return FindByBaseType(fqBaseName).Select(symbol => new ClassModel(symbol));
         }
+        /// <summary>
+        /// Gets the class by it's type.
+        /// </summary>
+        /// <param name="fqName">Name of the fq.</param>
+        /// <returns></returns>
         public ClassModel GetByType(string fqName)
         {
             var symbol = FindByType(fqName);
@@ -62,7 +79,7 @@ namespace Roslyn4T4
         {
             var classSymbol = model.GetDeclaredSymbol(type) as INamedTypeSymbol;
             var returnValue = new List<INamedTypeSymbol>();
-            while (classSymbol.BaseType != null)
+            while (classSymbol?.BaseType != null)
             {
                 returnValue.Add(classSymbol.BaseType);
                 if (!classSymbol.Interfaces.IsEmpty)

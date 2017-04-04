@@ -162,7 +162,7 @@
     <Compile Include="Models\AttributeModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\TypeModel.cs" />
-    <Compile Include="TypeService.cs" />
+    <Compile Include="ClassService.cs" />
     <Compile Include="Models\CompiledProject.cs" />
     <Compile Include="SolutionService.cs" />
     <Compile Include="Models\MethodModel.cs" />
