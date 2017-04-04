@@ -3,10 +3,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslyn4T4.Extensions;
-using Roslyn4T4.Models;
+using R4T4.Extensions;
+using R4T4.Models;
 
-namespace Roslyn4T4
+namespace R4T4
 {
     /// <summary>
     /// Class and Interface provider

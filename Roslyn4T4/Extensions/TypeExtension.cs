@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslyn4T4.Extensions
+namespace R4T4.Extensions
 {
     /// <summary>
     /// Extension methods for types and classes.

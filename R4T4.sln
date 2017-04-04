@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26228.10
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn4T4", "Roslyn4T4\Roslyn4T4.csproj", "{597B18F6-5918-423F-B91C-EE04EBBE0DDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "R4T4", "Roslyn4T4\R4T4.csproj", "{597B18F6-5918-423F-B91C-EE04EBBE0DDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,9 +2,9 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
-using Roslyn4T4.Models;
+using R4T4.Models;
 
-namespace Roslyn4T4
+namespace R4T4
 {
     /// <summary>
     /// Service for working with solutions and projects

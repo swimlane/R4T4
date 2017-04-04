@@ -1,8 +1,8 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Roslyn4T4.Extensions;
+using R4T4.Extensions;
 
-namespace Roslyn4T4.Models
+namespace R4T4.Models
 {
     /// <summary>
     /// Attributes model.

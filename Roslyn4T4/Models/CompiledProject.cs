@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace Roslyn4T4.Models
+namespace R4T4.Models
 {
     /// <summary>
     /// Project model with lazy cached compilation.

@@ -2,8 +2,7 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-
-namespace Roslyn4T4.Models
+namespace R4T4.Models
 {
     /// <summary>
     /// Model for classes and interfaces

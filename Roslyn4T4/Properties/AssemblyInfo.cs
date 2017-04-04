@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Roslyn4T4")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("R4T4")]
+[assembly: AssemblyDescription("T4 model provider using Roslyn")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Roslyn4T4")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Swimlane")]
+[assembly: AssemblyProduct("R4T4")]
+[assembly: AssemblyCopyright("Copyright © Swimlane  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

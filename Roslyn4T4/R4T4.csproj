@@ -7,8 +7,8 @@
     <ProjectGuid>{597B18F6-5918-423F-B91C-EE04EBBE0DDD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Roslyn4T4</RootNamespace>
-    <AssemblyName>Roslyn4T4</AssemblyName>
+    <RootNamespace>R4T4</RootNamespace>
+    <AssemblyName>R4T4</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Roslyn4T4.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\R4T4.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -176,7 +176,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Roslyn4T4.nuspec">
+    <None Include="R4T4.nuspec">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
