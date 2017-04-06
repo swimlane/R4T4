@@ -42,7 +42,7 @@ namespace R4T4.Models
         /// The attributes.
         /// </value>
         public ILookup<string, AttributeModel> Attributes => _attributes
-                                                             ?? (_attributes = Symbol.GetAttributes()
+                                                             ?? (_attributes = ((ISymbol)Symbol).GetAttributes()
                                                                  .ToLookup(
                                                                      ad => ad.AttributeClass.GetFullTypeString(),
                                                                      ad => new AttributeModel(ad)));

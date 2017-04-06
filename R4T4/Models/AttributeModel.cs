@@ -18,7 +18,19 @@ namespace R4T4.Models
         public AttributeModel(AttributeData attributeData)
         {
             _attributeData = attributeData;
-            Arguments=attributeData.ConstructorArguments.ToLookup(ca => ca.Value, ca => ca.Type.GetFullTypeString());
+            Arguments=GetArgumentModel(attributeData);
+        }
+
+        private static ILookup<string, object> GetArgumentModel(AttributeData attributeData)
+        {
+            var para = attributeData.AttributeConstructor.Parameters;
+           return Enumerable.Range(0, para.Length)
+                .ToLookup(i => para[i].Name, i => GetValue(attributeData.ConstructorArguments[i]));
+        }
+
+        private static object GetValue(TypedConstant constant)
+        {
+            return constant.Kind == TypedConstantKind.Array ? constant.Values.Select(GetValue).ToList() : constant.Value;
         }
         /// <summary>
         /// Gets or sets the arguments.
@@ -26,6 +38,6 @@ namespace R4T4.Models
         /// <value>
         /// The arguments.
         /// </value>
-        public ILookup<object, string> Arguments { get; set; }
+        public ILookup<string, object> Arguments { get; set; }
     }
 }

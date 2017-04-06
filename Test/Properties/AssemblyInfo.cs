@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("R4T4")]
-[assembly: AssemblyDescription("T4 model provider using Roslyn")]
+[assembly: AssemblyTitle("Test")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Swimlane")]
-[assembly: AssemblyProduct("R4T4")]
-[assembly: AssemblyCopyright("Copyright © Swimlane  2017")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Test")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("597b18f6-5918-423f-b91c-ee04ebbe0ddd")]
+[assembly: Guid("c54ab54a-ca2a-45fb-9063-34309caa5a65")]
 
 // Version information for an assembly consists of the following four values:
 //

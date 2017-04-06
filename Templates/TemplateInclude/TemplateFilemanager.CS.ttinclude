@@ -6,6 +6,8 @@
 <#@ assembly name="System.Xml.Linq"#>
 <#@ assembly name="System.Windows.Forms" #>
 <#@ assembly name="EnvDTE"#>
+<#@ assembly name="EnvDTE80" #>
+<#@ assembly name="Microsoft.VisualStudio.Shell.10.0"#>
 <#@ assembly name="Microsoft.VisualStudio.Shell.Interop "#>
 <#@ import namespace="Microsoft.VisualStudio.Shell.Interop"#>
 <#@ import namespace="System" #>
@@ -837,7 +839,9 @@ public class VSHelper
 				{
 					continue;
 				}
-				dte.ExecuteCommand(cmd, string.Empty);
+
+				EnvDTE80.DTE2 dte2 = dte as EnvDTE80.DTE2;
+				dte2.ExecuteCommand(cmd, String.Empty);
 			}
 
 			item.Save();
@@ -1023,7 +1027,27 @@ public class VSHelper
 
 	public static IEnumerable<EnvDTE.Project> GetAllProjects(EnvDTE.DTE dte)
 	{
-		return dte.Solution.Projects.Cast<EnvDTE.Project>();
+		List<EnvDTE.Project> projectList = new List<EnvDTE.Project>();
+
+		var folders = dte.Solution.Projects.Cast<EnvDTE.Project>().Where(p=>p.Kind == EnvDTE80.ProjectKinds.vsProjectKindSolutionFolder);
+
+		foreach (EnvDTE.Project folder in folders)
+		{
+			if (folder.ProjectItems == null) continue;
+
+			foreach (EnvDTE.ProjectItem item in folder.ProjectItems)
+			{
+				if (item.Object is EnvDTE.Project)
+					projectList.Add(item.Object as EnvDTE.Project);
+			}
+		}
+
+		var projects = dte.Solution.Projects.Cast<EnvDTE.Project>().Where(p=>p.Kind != EnvDTE80.ProjectKinds.vsProjectKindSolutionFolder);
+
+		if (projects.Count() > 0)
+			projectList.AddRange(projects);
+
+		return projectList;
 	}
 
 	public static EnvDTE.ProjectItem GetProjectItemWithName(EnvDTE.ProjectItems items, string itemName)

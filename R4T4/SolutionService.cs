@@ -21,7 +21,7 @@ namespace R4T4
         {
             var workspace = MSBuildWorkspace.Create();
             Solution = workspace.OpenSolutionAsync(solutionPath).Result;
-            _projects = Solution.Projects.Select(p => new CompiledProject(p));
+            _projects = Solution.Projects.Select(p => new CompiledProject(p)).ToList();
         }
 
         /// <summary>
